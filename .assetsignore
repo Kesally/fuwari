@@ -1,0 +1,4 @@
+# .assetsignore
+_worker.js
+_worker.js/**
+worker.js
