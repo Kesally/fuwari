@@ -5,7 +5,9 @@ description: ''
 image: ''
 tags: [测试文章]
 category: '测试文章'
-draft: true
+draft: false
 ---
 
 # 这是一篇测试文章
+初次尝试静态博客。
+**To Be Continued...**
