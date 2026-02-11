@@ -26,6 +26,8 @@ import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-cop
 
 import vercel from "@astrojs/vercel";
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://fuwari.vercel.app/",
@@ -104,7 +106,7 @@ export default defineConfig({
       }),
       svelte(),
       sitemap(),
-	],
+    ],
 
   markdown: {
       remarkPlugins: [
@@ -156,7 +158,7 @@ export default defineConfig({
               },
           ],
       ],
-	},
+    },
 
   vite: {
       build: {
@@ -173,7 +175,7 @@ export default defineConfig({
               },
           },
       },
-	},
+    },
 
-  adapter: vercel(),
+  adapter: cloudflare(),
 });
