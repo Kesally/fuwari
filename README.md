@@ -8,6 +8,7 @@
 [**🖥️在线预览（Cloudflare Workers）**](https://blog.kesally.ren)
 
 ![Preview Image](https://raw.githubusercontent.com/Kesally/fuwari/refs/heads/main/src/assets/images/home.png)
+**无文章版本在[Raw分支](https://github.com/Kesally/fuwari/tree/raw)，但可能会缺失一些功能**
 
 ## ✨ 功能特性
 
@@ -25,6 +26,8 @@
  - 背景图换为Bing背景
  - 在文章右侧添加文章目录选择功能
  - 添加查看提交信息与统计功能(基于Umami)
+ - 增加404页面
+ - 增加友链
   
 ## 👀 依赖要求
 

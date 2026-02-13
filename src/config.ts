@@ -56,6 +56,11 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		LinkPreset.About,
 		{
+			name: "友链",
+			url: "/friends/", // Internal links should not include the base path, as it is automatically added
+			external: false, // Show an external link icon and will open in a new tab
+		},
+		{
 			name: "仓库信息",
 			url: "/commit/", // Internal links should not include the base path, as it is automatically added
 			external: false, // Show an external link icon and will open in a new tab
@@ -84,6 +89,11 @@ export const profileConfig: ProfileConfig = {
 			url: "https://store.steampowered.com/kesally",
 		},
 		{
+			name: "Bilibili",
+			icon: "ph:television-simple-bold",
+			url: "https://space.bilibili.com/261690340",
+		},
+		{
 			name: "Twitter",
 			icon: "fa6-brands:twitter", // Visit https://icones.js.org/ for icon codes
 			// You will need to install the corresponding icon set if it's not already included
@@ -98,13 +108,15 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "QQ",
 			icon: "fa7-brands:qq",
-			url: "https://qq.com",
+			url: "https://qm.qq.com/q/mr7oRywpyw",
 		},
+		/*
 		{
 			name: "Telegram",
 			icon: "fa6-brands:telegram",
 			url: "https://t.me/kesally",
 		},
+		*/
 	],
 };
 
