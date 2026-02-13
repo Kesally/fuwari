@@ -1,0 +1,272 @@
+---
+import { Icon } from "astro-icon/components";
+import TOC from "./widget/TOC.astro";
+import { siteConfig } from "../config";
+
+interface Props {
+  headings?: any[];
+}
+
+const { headings = [] } = Astro.props;
+---
+
+<div id="mobile-toc-wrapper" class="lg:hidden fixed bottom-20 right-4 z-[999999] pointer-events-auto">
+  <button id="mobile-toc-toggle" class="w-12 h-12 rounded-full bg-[var(--card-bg)] text-[var(--primary)] shadow-lg flex items-center justify-center transition-transform active:scale-95 relative z-[1000000] pointer-events-auto border-2 border-[var(--primary)]">
+    <Icon name="material-symbols:menu-book-rounded" class="text-xl"></Icon>
+  </button>
+  <div id="mobile-toc-panel" class="fixed bottom-16 right-4 w-72 max-h-[70vh] overflow-y-auto bg-[var(--card-bg)] rounded-xl shadow-2xl p-4 transition-all duration-300 transform translate-x-full opacity-0 pointer-events-none z-[1000001]">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-bold">目录</h3>
+      <button id="mobile-toc-close" class="w-8 h-8 rounded-full bg-[var(--btn-regular-bg)] flex items-center justify-center">
+        <Icon name="material-symbols:close-rounded" class="text-lg"></Icon>
+      </button>
+    </div>
+    <div id="mobile-toc-content">
+      <TOC headings={headings}></TOC>
+    </div>
+  </div>
+</div>
+
+<script>
+  const initMobileTOC = () => {
+    const tocToggle = document.getElementById('mobile-toc-toggle');
+    const tocMobile = document.getElementById('mobile-toc-panel');
+    const tocClose = document.getElementById('mobile-toc-close');
+    const mainContentContainer = document.getElementById('main-content-container');
+    const tocWrapper = document.getElementById('mobile-toc-wrapper');
+
+    // Dynamically fetch headings from the page
+    const fetchHeadings = () => {
+      const article = document.querySelector('.prose') || document.querySelector('.markdown-content') || document.querySelector('article');
+      if (!article) {
+        return [];
+      }
+      
+      const headingElements = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      const headings = [];
+      
+      headingElements.forEach((heading, index) => {
+        let slug = heading.id;
+        if (!slug) {
+          // Generate slug from heading text if id is not present
+          slug = heading.textContent?.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '') || `heading-${index}`;
+          heading.id = slug;
+        }
+        
+        headings.push({
+          depth: parseInt(heading.tagName.substring(1)),
+          slug: slug,
+          text: heading.textContent?.trim() || ''
+        });
+      });
+      
+      return headings;
+    };
+    
+    // Update TOC content with fetched headings
+    const updateTOCContent = () => {
+      const tocContent = document.getElementById('mobile-toc-content');
+      if (!tocContent) {
+        return;
+      }
+      
+      const headings = fetchHeadings();
+      if (headings.length === 0) {
+        return;
+      }
+      
+      // Find min depth
+      let minDepth = 10;
+      for (const heading of headings) {
+        minDepth = Math.min(minDepth, heading.depth);
+      }
+      
+      const maxLevel = 3;
+      let heading1Count = 1;
+      
+      // Generate TOC HTML
+      let tocHTML = '<table-of-contents class="group">';
+      headings.filter((heading) => heading.depth < minDepth + maxLevel).forEach((heading) => {
+        const marginLeft = heading.depth == minDepth + 1 ? 'ml-4' : (heading.depth == minDepth + 2 ? 'ml-8' : '');
+        const badge = heading.depth == minDepth ? heading1Count++ : (heading.depth == minDepth + 1 ? '<div class="transition w-2 h-2 rounded-[0.1875rem] bg-[var(--toc-badge-bg)]"></div>' : '<div class="transition w-1.5 h-1.5 rounded-sm bg-black/5 dark:bg-white/10"></div>');
+        const textColor = heading.depth == minDepth || heading.depth == minDepth + 1 ? 'text-50' : 'text-30';
+        
+        tocHTML += `
+          <a href="#${heading.slug}" class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
+            hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2">
+            <div class="transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold ${marginLeft}">
+              ${badge}
+            </div>
+            <div class="transition text-sm ${textColor}">${heading.text}</div>
+          </a>
+        `;
+      });
+      tocHTML += '</table-of-contents>';
+      
+      // Update TOC content
+      tocContent.innerHTML = tocHTML;
+    };
+    
+    // Check if TOC should be visible
+    const checkTOCVisibility = () => {
+      const tocLinks = tocMobile.querySelectorAll('a[href^="#"]');
+      const hasHeadings = tocLinks.length > 0;
+      
+
+      
+      // Hide TOC if no headings
+      if (!hasHeadings && tocWrapper) {
+        tocWrapper.style.display = 'none';
+        return;
+      }
+      
+      // Check if we're on a large screen
+      const isLargeScreen = window.innerWidth >= 1024; // lg breakpoint
+
+      // Show TOC if it has headings and we're not on a large screen
+      if (hasHeadings && tocWrapper && !isLargeScreen) {
+        tocWrapper.style.display = 'block';
+      } else if (tocWrapper) {
+        tocWrapper.style.display = 'none';
+      }
+    };
+    
+    // Initial check and update
+    updateTOCContent();
+    checkTOCVisibility();
+    
+    // Check again after a delay to ensure TOC component is initialized
+    setTimeout(() => {
+      updateTOCContent();
+      checkTOCVisibility();
+    }, 100);
+    setTimeout(() => {
+      updateTOCContent();
+      checkTOCVisibility();
+    }, 300);
+    setTimeout(() => {
+      updateTOCContent();
+      checkTOCVisibility();
+    }, 500);
+
+    // Update TOC visibility on window resize
+    window.addEventListener('resize', () => {
+      checkTOCVisibility();
+    });
+
+    if (tocToggle && tocMobile && tocClose) {
+      // Ensure TOC elements are clickable
+      if (mainContentContainer) {
+        mainContentContainer.style.pointerEvents = 'none';
+      }
+
+      let isTocOpen = false;
+
+      const openToc = () => {
+        if (!isTocOpen) {
+          isTocOpen = true;
+          tocMobile.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+          tocMobile.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+        }
+      };
+
+      const closeToc = () => {
+        if (isTocOpen) {
+          isTocOpen = false;
+          tocMobile.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+          tocMobile.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+        }
+      };
+
+      const toggleToc = () => {
+        if (isTocOpen) {
+          closeToc();
+        } else {
+          openToc();
+        }
+      };
+
+      // Use mousedown event instead of click for better compatibility
+      tocToggle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleToc();
+      });
+
+      // Also add touchstart event for mobile devices
+      tocToggle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleToc();
+      });
+
+      tocClose.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeToc();
+      });
+
+      tocClose.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeToc();
+      });
+
+      // Close TOC when clicking outside
+      document.addEventListener('click', (e) => {
+        if (isTocOpen && !tocMobile.contains(e.target) && !tocToggle.contains(e.target)) {
+          closeToc();
+        }
+      });
+
+      // Close TOC when clicking on a link
+      const tocLinks = tocMobile.querySelectorAll('a[href^="#"]');
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          closeToc();
+        });
+      });
+
+      // Open TOC when clicking on article content
+      const articleContent = document.querySelector('article');
+      if (articleContent) {
+        articleContent.addEventListener('click', (e) => {
+          // Don't open if clicking on a link or button
+          if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
+            openToc();
+          }
+        });
+      }
+    }
+  };
+
+  // Initialize on DOM content loaded
+  document.addEventListener('DOMContentLoaded', initMobileTOC);
+
+  // Also initialize on Swup page view
+  const setupSwup = () => {
+    if (window.swup) {
+      window.swup.hooks.on('page:view', () => {
+        // Delay initialization to ensure content is fully loaded
+        setTimeout(initMobileTOC, 500);
+      });
+      window.swup.hooks.on('content:replace', () => {
+        // Delay initialization to ensure content is fully loaded
+        setTimeout(initMobileTOC, 500);
+      });
+    } else {
+      document.addEventListener('swup:enable', () => {
+        window.swup.hooks.on('page:view', () => {
+          // Delay initialization to ensure content is fully loaded
+          setTimeout(initMobileTOC, 500);
+        });
+        window.swup.hooks.on('content:replace', () => {
+          // Delay initialization to ensure content is fully loaded
+          setTimeout(initMobileTOC, 500);
+        });
+      });
+    }
+  };
+
+  setupSwup();
+</script>

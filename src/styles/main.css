@@ -175,3 +175,17 @@
 .collapsed {
     height: var(--collapsedHeight);
 }
+
+/* Mobile TOC styles */
+#toc-mobile {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#toc-mobile-wrapper {
+    transition: opacity 0.3s ease;
+}
+
+/* TOC active indicator for mobile */
+table-of-contents a.visible {
+    background-color: var(--toc-btn-hover);
+}

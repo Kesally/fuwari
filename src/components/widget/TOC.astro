@@ -31,7 +31,6 @@ let heading1Count = 1;
 
 const maxLevel = siteConfig.toc.depth;
 ---
-{isPostsRoute &&
 <table-of-contents class:list={[className, "group"]}>
     {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
             <a href={`#${heading.slug}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
@@ -57,7 +56,7 @@ const maxLevel = siteConfig.toc.depth;
     )}
     <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
         "group-hover:bg-transparent border-2 border-[var(--toc-btn-hover)] group-hover:border-[var(--toc-btn-active)] border-dashed"]}></div>
-</table-of-contents>}
+</table-of-contents>
 
 <script>
 class TableOfContents extends HTMLElement {
@@ -202,13 +201,14 @@ class TableOfContents extends HTMLElement {
 
     connectedCallback() {
         // wait for the onload animation to finish, which makes the `getBoundingClientRect` return correct values
-        const element = document.querySelector('.prose');
+        const element = document.querySelector('.prose') || document.querySelector('.markdown-content');
         if (element) {
             element.addEventListener('animationend', () => {
                 this.init();
             }, { once: true });
         } else {
-            console.debug('Animation element not found');
+            // Initialize immediately if animation element not found
+            this.init();
         }
     };
 

@@ -18,6 +18,15 @@
 我是一名来自[广东](https://baike.baidu.com/item/%E5%B9%BF%E4%B8%9C%E7%9C%81/132473)的高中生，15岁自学JavaScript、Python，平时爱好羽毛球、摄影、还有PUBG。
 ::github{repo="kesally/hs-qiqi-cv-plugin"}
 
+# 博客更新记录
+
+## 2026.02.13
+同步[老博客](https://old.blog.kesally.ren)文章
+## 2026.02.12
+博客增加[Umami](https://umami.is)统计、增加[一言](https://hitokoto.cn/)显示
+## 2026.02.11
+初次尝试静态博客、初步个性化
+
 
 <script>
     function getHostname(){
