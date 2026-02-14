@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear();
     <div class="transition text-50 text-sm text-center bg-white/90 dark:bg-black/80 shadow-lg backdrop-blur-sm rounded-xl p-4">
         &copy; <span id="copyright-year">2020-2026</span> <span><a class="transition link text-[var(--primary)] font-medium" href="https://github.com/Kesally" target="blank">{profileConfig.name}</a></span>. 博客代码 <a href="https://github.com/kesally/fuwari" class="transition link text-[var(--primary)] font-medium" target="_blank">已开源</a>
         <br>
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
+        本站提供 <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS订阅</a> 与 
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a><br>
         由
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> 和
@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
         强力驱动
         <br>
         由
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://www.cloudflare.com">CloudFlare Worker</a>
+        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://workers.cloudflare.com">CloudFlare Workers</a>
         构建并部署至全球 CloudFlare CDN 节点
     <br>
     </div>

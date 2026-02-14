@@ -7,7 +7,7 @@
 # 关于本站
 这是我的个人博客网站，主题来自[Fuwari](https://github.com/saicaca/fuwari).
 ::github{repo="saicaca/fuwari"}
-本站由[Cloudflare Pages](https://www.cloudflare.com)提供托管服务，由[Vercel](https://vercel.com)提供CDN加速服务
+本站由[Cloudflare Workers](https://workers.cloudflare.com)提供托管服务，由[Vercel](https://vercel.com)提供CDN加速服务
 ## 字体
 使用的是 [MiSans VF](https://hyperos.mi.com/font) ，中英文可变字重字体从官方 CDN 服务器获取。 
 [点此查看详情](/misans/)
@@ -20,6 +20,8 @@
 
 # 博客更新记录
 
+## 2026.02.14
+增加部署评论系统 [Giscus](https://giscus.app/zh-CN) 教程、优化网站细节
 ## 2026.02.13
 同步[老博客](https://old.blog.kesally.ren)文章、添加友链、Bing背景图、文章目录功能
 ## 2026.02.12

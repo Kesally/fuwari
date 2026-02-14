@@ -76,7 +76,7 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "Kesally",
-	bio: "实迷途其未远，觉今是而昨非。", // A short bio to display on the homepage
+	bio: "实迷途其未远，觉今是而昨非", // A short bio to display on the homepage
 	links: [
 		{
 			name: "GitHub",
@@ -86,7 +86,7 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Steam",
 			icon: "fa6-brands:steam",
-			url: "https://store.steampowered.com/kesally",
+			url: "https://steamcommunity.com/id/kesally",
 		},
 		{
 			name: "Bilibili",
